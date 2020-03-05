@@ -99,7 +99,7 @@ $rejcount=$results[0]->leave_count;
                         <div style="background-color: transparent; border: gray 3px solid;" class="card stats-card">
                             <div class="card-content">
                             
-                                <span style="color:black; font-size: 15px;" class="card-title">Total Filed Leaves</span>
+                                <span style="color:black; font-size: 15px;" class="card-title">Total No. of Filed Leaves</span>
     <?php
 $sql = "SELECT COUNT(empid) leave_count from tblleaves where Status BETWEEN 0 AND 2";
 $query = $dbh -> prepare($sql);

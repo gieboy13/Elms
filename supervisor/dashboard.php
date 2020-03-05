@@ -81,59 +81,64 @@ $appcount=$results[0]->leave_count;
                                     <div style="background-color: transparent; border: gray 3px solid;" class="card stats-card">
                             <div class="card-content">
                             
-                                <span style="color:black; font-size: 15px;" class="card-title">Total No. of Returned Leaves</span>
-    <?php
-$sql = "SELECT count(empid) leave_count from tblleaves where Status = 2";
+                                <span style="color: black; font-size: 15px;" class="card-title">Total No. of Approved Leaves</span>
+                                <span style="color: black;" class="stats-counter">
+<?php
+$sql = "SELECT count(empid) leave_count from tblleaves where Status = 1";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
-$rejcount=$results[0]->leave_count;
-?>                            
-                                <span style="color: black;" class="stats-counter"><span class="counter"><?php echo htmlentities($rejcount);?></span></span>
-                                <br><br><a href="notapproved-leaves.php?leaveid=<?php echo htmlentities($result->lid);?>" class="waves-effect waves-light btn blue m-b-xs"  > View Details</a>
+$appcount=$results[0]->leave_count;
+?>
+
+                                    <span class="counter"><?php echo htmlentities($appcount);?></span></span>
+                                    <br><br><a href="approvedleave-history.php?leaveid=<?php echo htmlentities($result->lid);?>" class="waves-effect waves-light btn blue m-b-xs"  > View Details</a>
                             </div>
                             <div class="progress stats-card-progress">
                                 <div class="determinate" style="width: 70%"></div>
                             </div>
-                            <div id="sparkline-line"></div>
+                            <div id="sparkline-bar"></div>
                         </div>
                                 </div>
                                 <div class="col s3 m3 ">
                                     <div style="background-color: transparent; border: gray 3px solid;" class="card stats-card">
                             <div class="card-content">
                             
-                                <span style="color:black; font-size: 15px;" class="card-title">Total No. of Filed Leaves</span>
-    <?php
-$sql = "SELECT COUNT(empid) leave_count from tblleaves where Status BETWEEN 0 AND 2";
+                                <span style="color: black; font-size: 15px;" class="card-title">Total No. of Approved Leaves</span>
+                                <span style="color: black;" class="stats-counter">
+<?php
+$sql = "SELECT count(empid) leave_count from tblleaves where Status = 1";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
-$totcount=$results[0]->leave_count;
-?>                            
-                                <span style="color: black;" class="stats-counter"><span class="counter"><?php echo htmlentities($totcount);?></span></span>
-                                <br><br><a href="leaves.php?leaveid=<?php echo htmlentities($result->lid);?>" class="waves-effect waves-light btn blue m-b-xs"  > View Details</a>
+$appcount=$results[0]->leave_count;
+?>
+
+                                    <span class="counter"><?php echo htmlentities($appcount);?></span></span>
+                                    <br><br><a href="approvedleave-history.php?leaveid=<?php echo htmlentities($result->lid);?>" class="waves-effect waves-light btn blue m-b-xs"  > View Details</a>
                             </div>
                             <div class="progress stats-card-progress">
                                 <div class="determinate" style="width: 70%"></div>
                             </div>
-                            <div id="sparkline-line"></div>
+                            <div id="sparkline-bar"></div>
                         </div>
                                 </div>
                                 <div class="col s3 m3 ">
                                     <div style="background-color: transparent; border: gray 3px solid;" class="card stats-card">
                             <div class="card-content">
-                                <span style="color: black; font-size: 15px;" class="card-title">Total No. of Pending Leave</span>
-                                    <?php
-$sql = "SELECT count(empid) leave_count from tblleaves where Status = 0";
+                            
+                                <span style="color: black; font-size: 15px;" class="card-title">Total No. of Approved Leaves</span>
+                                <span style="color: black;" class="stats-counter">
+<?php
+$sql = "SELECT count(empid) leave_count from tblleaves where Status = 1";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
-$penleavecount=$results[0]->leave_count;
-?>   
+$appcount=$results[0]->leave_count;
+?>
 
-                                <span style="color: black;" class="stats-counter"><span class="counter"><?php echo htmlentities($penleavecount);?></span></span>
-                                <br><br><a href="pending-leavehistory.php?leaveid=<?php echo htmlentities($result->lid);?>" class="waves-effect waves-light btn blue m-b-xs"  > View Details</a>
-                      
+                                    <span class="counter"><?php echo htmlentities($appcount);?></span></span>
+                                    <br><br><a href="approvedleave-history.php?leaveid=<?php echo htmlentities($result->lid);?>" class="waves-effect waves-light btn blue m-b-xs"  > View Details</a>
                             </div>
                             <div class="progress stats-card-progress">
                                 <div class="determinate" style="width: 70%"></div>

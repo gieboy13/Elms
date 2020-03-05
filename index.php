@@ -140,8 +140,9 @@ else{
                     <li>&nbsp;</li>
                     <li class="no-padding"><a style="color: white;" class="waves-effect waves-red" href="index.php"><i style="color: white;" class="material-icons">account_box</i>Employee Login</a></li>
                     <li class="no-padding"><a style="color: white;" class="waves-effect waves-red" href="forgot-password.php"><i style="color: white;" class="material-icons">account_box</i>Emp Password Recovery</a></li>
+                    <li class="no-padding"><a style="color: white;" class="waves-effect waves-red" href="admin/"><i style="color: white;" class="material-icons">account_box</i>Admin Login</a></li>
+                    <li class="no-padding"><a style="color: white;" class="waves-effect waves-red" href="supervisor/"><i style="color: white;" class="material-icons">account_box</i>Supervisor Login</a></li>
 
-                       <li class="no-padding"><a style="color: white;" class="waves-effect waves-red" href="admin/"><i style="color: white;" class="material-icons">account_box</i>Admin Login</a></li>
 
                 </ul>
           <div class="footer">

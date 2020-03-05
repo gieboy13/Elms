@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(1);
 
     ?>
     <!DOCTYPE html>
@@ -21,7 +21,7 @@ error_reporting(0);
 </head>
 <body>
 <?php
-include('conn2.php');
+include('includes/config.php');
 $leaveid = $_GET['id'];
     $query=mysqli_query($conn2,"select * from tblleaves l 
                                 join tblemployees e 
