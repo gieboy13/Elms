@@ -66,7 +66,7 @@
                     </li>
 
                      <li class="no-padding">
-                        <a   href="reports.php" style="color: white;" class="collapsible-header waves-effect waves-grey"><i style="color: white;" class="material-icons">account_box</i>Reports<i style="color: white;" class="nav-drop-icon material-icons">keyboard_arrow_right</i></a>
+                        <a   href="reports.php" style="color: white;" class="collapsible-header waves-effect waves-grey"><i style="color: white;" class="material-icons">account_box</i>Reports</a>
                         
                     </li>
 

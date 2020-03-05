@@ -1,14 +1,13 @@
 <?php
 header('Content-Type: application/json');
 
+$conn = mysqli_connect("localhost:8111","root","password","elms");
 
-$sqlQuery = "select count(*) as TotalOnLeave, NOW() as ThisYear,
-EXTRACT(YEAR FROM FromDate) as year1,
-EXTRACT(YEAR FROM ToDate) as year2 
-from tblleaves 
-where Status=1 
-group by year1, year2 
-order by year1, year2";
+$sqlQuery = "SELECT year(l.ToDate) as year, COUNT(*) as count
+FROM tblleaves as l
+WHERE STATUS = 1
+GROUP BY year(l.ToDate)
+";
 
 $result = mysqli_query($conn,$sqlQuery);
 
