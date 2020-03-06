@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 23, 2019 at 05:39 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Host: localhost:8111
+-- Generation Time: Mar 06, 2020 at 08:43 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,7 +32,7 @@ CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `UserName` varchar(100) NOT NULL,
   `Password` varchar(100) NOT NULL,
-  `updationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+  `updationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -60,31 +60,51 @@ CREATE TABLE `empcredits` (
 --
 
 INSERT INTO `empcredits` (`empid`, `sick_credits`, `vacation_credits`, `date_reset`) VALUES
-(0, '1.25', '1.25', '2019-10-10'),
-(12, '0.00', '0.25', '2019-08-19'),
-(13, '0.25', '1.25', '2019-08-19'),
-(14, '-0.75', '0.00', '2019-08-19'),
-(15, '1.25', '0.25', '2019-08-19'),
-(16, '1.25', '1.25', '2019-08-21'),
-(17, '1.25', '1.25', '2019-08-22'),
-(18, '1.25', '1.25', '2019-08-22'),
-(19, '0.25', '1.25', '2019-08-22'),
-(20, '-1.75', '0.25', '2019-08-22'),
-(21, '1.25', '1.25', '2019-08-22'),
-(22, '1.25', '1.25', '2019-08-22'),
-(23, '-0.75', '0.25', '2019-08-22'),
-(24, '1.25', '1.25', '2019-08-22'),
-(25, '1.25', '1.25', '2019-08-22'),
-(26, '1.25', '1.25', '2019-08-22'),
-(27, '1.25', '1.25', '2019-08-22'),
-(28, '-1.75', '-1.75', '2019-09-19'),
-(29, '1.25', '0.25', '2019-10-09'),
-(30, '0.25', '-3.75', '2019-10-10'),
-(31, '1.25', '1.25', '2019-10-10'),
-(32, '1.25', '-0.75', '2019-10-13'),
-(33, '1.25', '0.25', '2019-10-14'),
-(34, '1.25', '1.25', '2019-10-15'),
-(35, '1.25', '0.25', '2019-10-15');
+(0, '3.75', '3.75', '2020-03-06'),
+(12, '3.75', '3.75', '2020-03-06'),
+(13, '3.75', '3.75', '2020-03-06'),
+(14, '3.75', '3.75', '2020-03-06'),
+(15, '3.75', '3.75', '2020-03-06'),
+(16, '3.75', '3.75', '2020-03-06'),
+(17, '3.75', '3.75', '2020-03-06'),
+(18, '3.75', '3.75', '2020-03-06'),
+(19, '3.75', '3.75', '2020-03-06'),
+(20, '3.75', '3.75', '2020-03-06'),
+(21, '3.75', '3.75', '2020-03-06'),
+(22, '3.75', '3.75', '2020-03-06'),
+(23, '1.75', '3.75', '2020-03-06'),
+(24, '3.75', '3.75', '2020-03-06'),
+(25, '3.75', '3.75', '2020-03-06'),
+(26, '3.75', '3.75', '2020-03-06'),
+(27, '3.75', '3.75', '2020-03-06'),
+(28, '3.75', '3.75', '2020-03-06'),
+(29, '3.75', '3.75', '2020-03-06'),
+(30, '3.75', '3.75', '2020-03-06'),
+(31, '3.75', '3.75', '2020-03-06'),
+(32, '3.75', '3.75', '2020-03-06'),
+(33, '3.75', '3.75', '2020-03-06'),
+(34, '3.75', '3.75', '2020-03-06'),
+(35, '3.75', '3.75', '2020-03-06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supervisor`
+--
+
+CREATE TABLE `supervisor` (
+  `id` int(11) NOT NULL,
+  `UserName` varchar(100) NOT NULL,
+  `Password` varchar(100) NOT NULL,
+  `updationDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `supervisor`
+--
+
+INSERT INTO `supervisor` (`id`, `UserName`, `Password`, `updationDate`) VALUES
+(1, 'supervisor', '93813f00d2920b8b2790cdc580d1f247', '2020-03-04 01:21:51');
 
 -- --------------------------------------------------------
 
@@ -97,7 +117,7 @@ CREATE TABLE `tbldepartments` (
   `DepartmentName` varchar(150) DEFAULT NULL,
   `DepartmentShortName` varchar(100) NOT NULL,
   `DepartmentCode` varchar(50) DEFAULT NULL,
-  `CreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `CreationDate` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -239,7 +259,7 @@ CREATE TABLE `tblemployees` (
   `Position` varchar(150) NOT NULL,
   `Phonenumber` char(11) NOT NULL,
   `Status` int(1) NOT NULL,
-  `RegDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `RegDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `salary` int(11) NOT NULL,
   `MiddleName` varchar(100) NOT NULL,
   `EmpImage` varchar(100) NOT NULL
@@ -285,67 +305,100 @@ CREATE TABLE `tblleaves` (
   `ToDate` varchar(250) NOT NULL,
   `FromDate` varchar(250) NOT NULL,
   `Description` mediumtext NOT NULL,
-  `PostingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `AdminRemark` mediumtext,
+  `PostingDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `AdminRemark` mediumtext DEFAULT NULL,
   `AdminRemarkDate` varchar(120) DEFAULT NULL,
   `Status` int(1) NOT NULL,
   `IsRead` int(1) NOT NULL,
-  `empid` int(11) DEFAULT NULL
+  `empid` int(11) DEFAULT NULL,
+  `casesick` varchar(255) DEFAULT NULL,
+  `casesickdesc` varchar(255) DEFAULT NULL,
+  `casevac` varchar(255) DEFAULT NULL,
+  `casevacdesc` varchar(255) DEFAULT NULL,
+  `commutation` varchar(255) DEFAULT NULL,
+  `justification` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tblleaves`
 --
 
-INSERT INTO `tblleaves` (`id`, `LeaveType`, `ToDate`, `FromDate`, `Description`, `PostingDate`, `AdminRemark`, `AdminRemarkDate`, `Status`, `IsRead`, `empid`) VALUES
-(95, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-19 09:38:57', 'wqwqwqw', '2019-08-19 15:09:41 ', 2, 1, 15),
-(96, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-19 09:54:20', 'huhj78gyf7h', '2019-08-19 15:24:51 ', 1, 1, 15),
-(97, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-19 10:00:28', 'okay!', '2019-08-19 15:34:20 ', 1, 1, 14),
-(98, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-19 10:29:51', 'yesas', '2019-08-19 16:00:21 ', 1, 1, 15),
-(99, 'Vacation Leave', '2019-08-28', '2019-08-29', '', '2019-08-20 09:18:38', 'asfsadfasdf', '2019-08-20 14:49:33 ', 1, 1, 14),
-(100, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-21 13:40:49', 'hahaha', '2019-08-21 19:12:42 ', 1, 1, 14),
-(101, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-22 06:45:01', 'haha', '2019-08-22 12:15:30 ', 1, 1, 20),
-(102, 'Vacation Leave', '2019-08-23', '2019-08-25', '', '2019-08-22 06:48:50', 'dasfas', '2019-08-22 12:20:03 ', 1, 1, 20),
-(103, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:07:29', 'hahaha', '2019-08-22 12:37:46 ', 1, 1, 20),
-(104, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:13:12', 'aaaaaaaad', '2019-08-22 12:43:36 ', 1, 1, 20),
-(105, 'Sick Leave', '2019-08-01', '2019-08-04', '', '2019-08-22 07:20:19', 'adasd', '2019-08-22 12:50:58 ', 1, 1, 20),
-(106, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:47:52', 'aaaaadas', '2019-08-22 13:18:12 ', 1, 1, 20),
-(107, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:52:50', 'eeeee', '2019-08-22 13:23:08 ', 1, 1, 20),
-(108, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:55:11', 'hahahaa', '2019-08-22 13:25:31 ', 2, 1, 20),
-(109, 'Vacation Leave', '2019-08-24', '2019-08-26', '', '2019-08-22 10:20:07', '', '2019-08-22 15:55:12 ', 1, 1, 15),
-(110, 'Sick Leave', '2019-08-20', '2019-08-21', '', '2019-08-22 10:27:36', '', '2019-08-22 15:57:57 ', 1, 1, 14),
-(111, 'Sick Leave', '2019-09-09', '2019-09-09', '', '2019-09-09 11:01:26', '', '2019-09-19 20:24:24 ', 1, 1, 19),
-(112, 'Sick Leave', '2019-09-14', '2019-09-26', '', '2019-09-13 01:36:06', '', '2019-09-19 20:24:43 ', 2, 1, 20),
-(113, 'Sick Leave', '2019-09-12', '2019-09-14', '', '2019-09-19 13:47:59', '', '2019-09-19 20:45:26 ', 1, 1, 28),
-(114, 'Vacation Leave', '2019-09-27', '2019-09-30', '', '2019-09-19 15:23:50', '', '2019-09-19 21:05:13 ', 1, 1, 28),
-(115, 'Sick Leave', '2019-09-01', '2019-09-05', '', '2019-09-19 15:41:17', NULL, NULL, 0, 1, 28),
-(116, 'Vacation Leave', '2019-09-27', '2019-09-30', '', '2019-09-19 15:47:23', NULL, NULL, 0, 1, 23),
-(117, 'Sick Leave', '2019-09-12', '2019-09-22', '', '2019-09-20 05:37:34', NULL, NULL, 0, 1, 23),
-(118, 'Immediate Family', '2019-10-11', '2019-10-23', '', '2019-10-04 09:45:55', NULL, NULL, 0, 1, 23),
-(119, 'Sick Leave', '2019-09-03', '2019-09-04', '', '2019-10-04 09:53:26', 'sige lang', '2019-10-04 15:26:09 ', 1, 1, 23),
-(120, 'Vacation Leave', '2019-11-04', '2019-10-11', '', '2019-10-09 15:19:54', '', '2019-10-09 20:50:43 ', 1, 1, 29),
-(121, 'Sick Leave', '2019-10-01', '2019-10-07', '', '2019-10-09 15:22:11', '', '2019-10-09 20:52:45 ', 2, 1, 23),
-(122, 'Sick Leave', '2019-10-01', '2019-10-08', '', '2019-10-09 15:23:26', '', '2019-10-09 20:53:43 ', 1, 1, 23),
-(123, 'Vacation Leave', '2019-10-17', '2019-10-21', '', '2019-10-10 10:22:05', '', '2019-10-10 15:52:20 ', 1, 1, 23),
-(124, 'Sick Leave', '2019-10-09', '2019-10-20', '', '2019-10-10 12:29:39', '', '2019-10-10 18:00:00 ', 1, 1, 30),
-(125, 'Vacation Leave', '2019-10-14', '2019-10-14', '', '2019-10-11 02:42:29', '', '2019-10-11 8:13:05 ', 1, 1, 30),
-(126, 'Vacation Leave', '2019-10-15', '2019-10-14', '', '2019-10-11 03:05:50', '', '2019-10-11 8:36:18 ', 1, 1, 30),
-(127, 'Vacation Leave', '2019-10-01', '2019-11-01', '', '2019-10-11 03:09:05', NULL, NULL, 0, 1, 30),
-(128, 'Vacation Leave', '2019-10-20', '2019-11-01', '', '2019-10-11 03:09:27', NULL, NULL, 0, 1, 30),
-(129, 'Vacation Leave', '2019-10-18', '2019-10-14', '', '2019-10-11 03:15:35', '', '10-11-2019 8:46:23 ', 1, 1, 30),
-(130, 'Vacation Leave', '2019-10-14', '2019-10-11', '', '2019-10-11 08:55:19', '', '10-11-2019 14:25:39 ', 1, 1, 30),
-(131, 'Maternity Leave', '2019-10-25', '2019-10-14', '', '2019-10-11 18:10:49', NULL, NULL, 0, 1, 30),
-(132, 'Vacation Leave', '2019-11-30', '2019-11-01', '', '2019-10-13 14:26:35', '', '10-13-2019 19:57:03 ', 1, 1, 32),
-(133, 'Vacation Leave', '2019-10-31', '2019-10-14', '', '2019-10-13 14:31:23', '', '10-13-2019 20:02:41 ', 1, 1, 32),
-(134, 'Vacation Leave', '2019-10-21', '2019-10-18', '', '2019-10-14 08:02:08', '', '10-14-2019 13:32:28 ', 1, 1, 30),
-(135, 'Vacation Leave', '2019-10-15', '2019-10-14', '', '2019-10-14 08:32:45', '', '10-14-2019 14:04:31 ', 1, 1, 33),
-(136, 'Vacation Leave', '2019-11-04', '2019-10-31', '', '2019-10-14 21:56:51', '', '10-15-2019 3:28:10 ', 1, 1, 28),
-(137, 'Sick Leave', '2019-10-01', '2019-10-03', '', '2019-10-14 22:09:53', '', '10-15-2019 3:40:13 ', 1, 1, 28),
-(138, 'Sick Leave', '2019-10-04', '2019-10-01', '', '2019-10-14 22:12:07', '', '10-15-2019 3:42:23 ', 1, 1, 28),
-(139, 'Vacation Leave', '2019-11-04', '2019-10-31', '', '2019-10-14 22:13:33', '', '10-15-2019 3:43:55 ', 1, 1, 28),
-(140, 'Leave of Absence', '2019-10-28', '2019-10-24', '', '2019-10-15 06:24:50', 'okay', '10-15-2019 12:03:11 ', 1, 1, 34),
-(141, 'Vacation Leave', '2019-11-01', '2019-10-25', '', '2019-10-15 06:26:08', 'Need to report in HR Office', '10-15-2019 12:02:46 ', 1, 1, 35),
-(142, 'Vacation Leave', '2019-11-01', '2019-10-25', '', '2019-10-15 06:33:16', NULL, NULL, 0, 0, 35);
+INSERT INTO `tblleaves` (`id`, `LeaveType`, `ToDate`, `FromDate`, `Description`, `PostingDate`, `AdminRemark`, `AdminRemarkDate`, `Status`, `IsRead`, `empid`, `casesick`, `casesickdesc`, `casevac`, `casevacdesc`, `commutation`, `justification`) VALUES
+(95, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-19 09:38:57', 'wqwqwqw', '2019-08-19 15:09:41 ', 2, 1, 15, NULL, NULL, NULL, NULL, NULL, NULL),
+(96, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-19 09:54:20', 'huhj78gyf7h', '2019-08-19 15:24:51 ', 1, 1, 15, NULL, NULL, NULL, NULL, NULL, NULL),
+(97, 'Sick Leave', '2020-08-01', '2020-08-02', '', '2020-08-19 10:00:28', 'okay!', '2020-08-19 15:34:20 ', 1, 1, 14, NULL, NULL, NULL, NULL, NULL, NULL),
+(98, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-19 10:29:51', 'yesas', '2019-08-19 16:00:21 ', 1, 1, 15, NULL, NULL, NULL, NULL, NULL, NULL),
+(99, 'Vacation Leave', '2019-08-28', '2019-08-29', '', '2019-08-20 09:18:38', 'asfsadfasdf', '2019-08-20 14:49:33 ', 1, 1, 14, NULL, NULL, NULL, NULL, NULL, NULL),
+(100, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-21 13:40:49', 'hahaha', '2019-08-21 19:12:42 ', 1, 1, 14, NULL, NULL, NULL, NULL, NULL, NULL),
+(101, 'Sick Leave', '2019-08-01', '2019-08-02', '', '2019-08-22 06:45:01', 'haha', '2019-08-22 12:15:30 ', 1, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(102, 'Vacation Leave', '2019-08-23', '2019-08-25', '', '2019-08-22 06:48:50', 'dasfas', '2019-08-22 12:20:03 ', 1, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(103, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:07:29', 'hahaha', '2019-08-22 12:37:46 ', 1, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(104, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:13:12', 'aaaaaaaad', '2019-08-22 12:43:36 ', 1, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(105, 'Sick Leave', '2019-08-01', '2019-08-04', '', '2019-08-22 07:20:19', 'adasd', '2019-08-22 12:50:58 ', 1, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(106, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:47:52', 'aaaaadas', '2019-08-22 13:18:12 ', 1, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(107, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:52:50', 'eeeee', '2019-08-22 13:23:08 ', 1, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(108, 'Sick Leave', '2019-08-01', '2019-08-03', '', '2019-08-22 07:55:11', 'hahahaa', '2019-08-22 13:25:31 ', 2, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(109, 'Vacation Leave', '2019-08-24', '2019-08-26', '', '2019-08-22 10:20:07', '', '2019-08-22 15:55:12 ', 1, 1, 15, NULL, NULL, NULL, NULL, NULL, NULL),
+(110, 'Sick Leave', '2019-08-20', '2019-08-21', '', '2019-08-22 10:27:36', '', '2019-08-22 15:57:57 ', 1, 1, 14, NULL, NULL, NULL, NULL, NULL, NULL),
+(111, 'Sick Leave', '2019-09-09', '2019-09-09', '', '2019-09-09 11:01:26', '', '2019-09-19 20:24:24 ', 1, 1, 19, NULL, NULL, NULL, NULL, NULL, NULL),
+(112, 'Sick Leave', '2019-09-14', '2019-09-26', '', '2019-09-13 01:36:06', '', '2019-09-19 20:24:43 ', 2, 1, 20, NULL, NULL, NULL, NULL, NULL, NULL),
+(113, 'Sick Leave', '2019-09-12', '2019-09-14', '', '2019-09-19 13:47:59', '', '2019-09-19 20:45:26 ', 1, 1, 28, NULL, NULL, NULL, NULL, NULL, NULL),
+(114, 'Vacation Leave', '2019-09-27', '2019-09-30', '', '2019-09-19 15:23:50', '', '2019-09-19 21:05:13 ', 1, 1, 28, NULL, NULL, NULL, NULL, NULL, NULL),
+(115, 'Sick Leave', '2019-09-01', '2019-09-05', '', '2019-09-19 15:41:17', NULL, NULL, 0, 1, 28, NULL, NULL, NULL, NULL, NULL, NULL),
+(116, 'Vacation Leave', '2019-09-27', '2019-09-30', '', '2019-09-19 15:47:23', 's', '2019-09-19 20:24:43 ', 3, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(117, 'Sick Leave', '2019-09-12', '2019-09-22', '', '2019-09-20 05:37:34', NULL, NULL, 3, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(118, 'Immediate Family', '2019-10-11', '2019-10-23', '', '2019-10-04 09:45:55', NULL, NULL, 3, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(119, 'Sick Leave', '2019-09-03', '2019-09-04', '', '2019-10-04 09:53:26', 'sige lang', '2019-10-04 15:26:09 ', 1, 1, 23, 'In Hospital (Specify)', 'Tayuman Corona', 'Within the Philippines', 'Abroad Desc', 'Requested', NULL),
+(120, 'Vacation Leave', '2019-11-04', '2019-10-11', '', '2019-10-09 15:19:54', '', '2019-10-09 20:50:43 ', 1, 1, 29, NULL, NULL, NULL, NULL, NULL, NULL),
+(121, 'Sick Leave', '2019-10-01', '2019-10-07', '', '2019-10-09 15:22:11', '', '2019-10-09 20:52:45 ', 2, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(122, 'Sick Leave', '2019-10-01', '2019-10-08', '', '2019-10-09 15:23:26', '', '2019-10-09 20:53:43 ', 1, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(123, 'Vacation Leave', '2019-10-17', '2019-10-21', '', '2019-10-10 10:22:05', '', '2019-10-10 15:52:20 ', 1, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(124, 'Sick Leave', '2019-10-09', '2019-10-20', '', '2019-10-10 12:29:39', '', '2019-10-10 18:00:00 ', 1, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(125, 'Vacation Leave', '2019-10-14', '2019-10-14', '', '2019-10-11 02:42:29', '', '2019-10-11 8:13:05 ', 1, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(126, 'Vacation Leave', '2019-10-15', '2019-10-14', '', '2019-10-11 03:05:50', '', '2019-10-11 8:36:18 ', 1, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(127, 'Vacation Leave', '2019-10-01', '2019-11-01', '', '2019-10-11 03:09:05', NULL, NULL, 0, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(128, 'Vacation Leave', '2019-10-20', '2019-11-01', '', '2019-10-11 03:09:27', NULL, NULL, 0, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(129, 'Vacation Leave', '2019-10-18', '2019-10-14', '', '2019-10-11 03:15:35', '', '10-11-2019 8:46:23 ', 1, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(130, 'Vacation Leave', '2019-10-14', '2019-10-11', '', '2019-10-11 08:55:19', '', '10-11-2019 14:25:39 ', 1, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(131, 'Maternity Leave', '2019-10-25', '2019-10-14', '', '2019-10-11 18:10:49', NULL, NULL, 0, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(132, 'Vacation Leave', '2019-11-30', '2019-11-01', '', '2019-10-13 14:26:35', '', '10-13-2019 19:57:03 ', 1, 1, 32, NULL, NULL, NULL, NULL, NULL, NULL),
+(133, 'Vacation Leave', '2019-10-31', '2019-10-14', '', '2019-10-13 14:31:23', '', '10-13-2019 20:02:41 ', 1, 1, 32, NULL, NULL, NULL, NULL, NULL, NULL),
+(134, 'Vacation Leave', '2019-10-21', '2019-10-18', '', '2019-10-14 08:02:08', '', '10-14-2019 13:32:28 ', 1, 1, 30, NULL, NULL, NULL, NULL, NULL, NULL),
+(135, 'Vacation Leave', '2019-10-15', '2019-10-14', '', '2019-10-14 08:32:45', '', '10-14-2019 14:04:31 ', 1, 1, 33, NULL, NULL, NULL, NULL, NULL, NULL),
+(136, 'Vacation Leave', '2019-11-04', '2019-10-31', '', '2019-10-14 21:56:51', '', '10-15-2019 3:28:10 ', 1, 1, 28, NULL, NULL, NULL, NULL, NULL, NULL),
+(137, 'Sick Leave', '2019-10-01', '2019-10-03', '', '2019-10-14 22:09:53', '', '10-15-2019 3:40:13 ', 1, 1, 28, NULL, NULL, NULL, NULL, NULL, NULL),
+(138, 'Sick Leave', '2019-10-04', '2019-10-01', '', '2019-10-14 22:12:07', '', '10-15-2019 3:42:23 ', 1, 1, 28, NULL, NULL, NULL, NULL, NULL, NULL),
+(139, 'Vacation Leave', '2019-11-04', '2019-10-31', '', '2019-10-14 22:13:33', '', '10-15-2019 3:43:55 ', 1, 1, 28, NULL, NULL, NULL, NULL, NULL, NULL),
+(140, 'Leave of Absence', '2019-10-28', '2019-10-24', '', '2019-10-15 06:24:50', 'okay', '10-15-2019 12:03:11 ', 1, 1, 34, NULL, NULL, NULL, NULL, NULL, NULL),
+(141, 'Vacation Leave', '2019-11-01', '2019-10-25', '', '2019-10-15 06:26:08', 'Need to report in HR Office', '10-15-2019 12:02:46 ', 1, 1, 35, NULL, NULL, NULL, NULL, NULL, NULL),
+(142, 'Vacation Leave', '2019-11-01', '2019-10-25', '', '2019-10-15 06:33:16', NULL, NULL, 0, 1, 35, NULL, NULL, NULL, NULL, NULL, NULL),
+(143, 'Sick Leave', '03/03/2020', '03/05/2020', '', '2020-03-05 02:44:27', NULL, NULL, 3, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(144, 'Sick Leave', '03/03/2020', '03/05/2020', '', '2020-03-05 02:45:17', NULL, NULL, 3, 0, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(145, 'Leave of Absence', '03/13/2020', '03/10/2020', '', '2020-03-05 02:45:34', NULL, NULL, 3, 0, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(146, 'Sick Leave', '03/04/2020', '03/02/2020', '', '2020-03-05 02:46:01', 'Sige absent ka muna oks lang naman', '03-05-2020 8:18:37 ', 1, 1, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(147, 'Cumulation of Leave Credits', '03/20/2020', '03/12/2020', '', '2020-03-05 06:34:21', NULL, NULL, 3, 0, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(148, 'Sick Leave', '03/04/2020', '03/02/2020', '', '2020-03-05 09:38:10', NULL, NULL, 3, 0, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(149, 'Sick Leave', '03/04/2020', '03/02/2020', '', '2020-03-05 09:38:10', NULL, NULL, 0, 0, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(150, 'Sick Leave', '03/02/2020', '03/04/2020', '', '2020-03-05 09:45:29', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(151, 'Sick Leave', '03/02/2020', '03/04/2020', '', '2020-03-05 09:46:23', NULL, NULL, 0, 0, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(152, 'Vacation Leave', '03/09/2020', '03/19/2020', '', '2020-03-05 09:48:47', NULL, NULL, 3, 0, 23, NULL, NULL, NULL, NULL, NULL, NULL),
+(153, 'Sick Leave', '03/02/2020', '03/04/2020', '', '2020-03-05 09:51:12', NULL, NULL, 0, 0, 23, 'In Hospital', 'Tayuman Hospital', '', '', 'notrequested', NULL),
+(154, 'Immediate Family', '03/10/2020', '03/18/2020', '', '2020-03-05 09:55:42', NULL, NULL, 0, 0, 23, '', '', '', '', 'requested', NULL),
+(155, 'Immediate Family', '03/10/2020', '03/18/2020', '', '2020-03-05 09:55:43', NULL, NULL, 0, 0, 23, '', '', '', '', 'requested', NULL),
+(159, 'Commutation of Leave Credits', '03/10/2020', '03/19/2020', '', '2020-03-05 10:08:10', NULL, NULL, 0, 1, 23, '', '', '', '', 'requested', NULL),
+(160, 'Immediate Family', '03/17/2020', '03/12/2020', '', '2020-03-05 10:11:20', NULL, NULL, 3, 0, 23, '', '', '', '', 'requested', NULL),
+(161, 'Cumulation of Leave Credits', '03/17/2020', '03/19/2020', '', '2020-03-05 10:13:36', NULL, NULL, 3, 1, 23, '', '', '', '', 'requested', NULL),
+(162, 'Sick Leave', '03/02/2020', '03/05/2020', '', '2020-03-06 01:48:47', 'sigi pagaling ka baby', '03-06-2020 7:19:38 ', 1, 1, 23, 'In Hospital', 'Masakit ang katawan ko ndi ako nakapasok', '', '', 'notrequested', NULL),
+(163, 'Sick Leave', '03/02/2020', '03/05/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 02:13:53', NULL, NULL, 0, 1, 14, 'Out Patient (Specify)', 'Sa bahay lang kaya naman ', '', '', 'Not Requested', NULL),
+(164, 'Sick Leave', '03/02/2020', '03/05/2020', '100000 capacity with aircon na malaming', '2020-03-06 02:32:30', NULL, NULL, 0, 0, 14, 'Out Patient (Specify)', 'medcert test', '', '', 'Not Requested', NULL),
+(165, 'Sick Leave', '03/02/2020', '03/05/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 02:34:07', NULL, NULL, 0, 0, 14, 'Out Patient (Specify)', '123', '', '', 'Not Requested', NULL),
+(166, 'Sick Leave', '03/02/2020', '03/05/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 02:34:35', NULL, NULL, 0, 0, 14, 'Out Patient (Specify)', '123', '', '', 'Not Requested', NULL),
+(167, 'Sick Leave', '03/02/2020', '03/04/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 02:35:42', NULL, NULL, 0, 0, 14, 'Out Patient (Specify)', '123', '', '', 'Requested', 'C:\\fakepath\\Justification.docx'),
+(168, 'Sick Leave', '03/02/2020', '03/04/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 02:37:34', NULL, NULL, 0, 0, 14, 'Out Patient (Specify)', '123', '', '', 'Not Requested', 'C:\\fakepath\\Justification.docx'),
+(169, 'Sick Leave', '03/03/2020', '03/05/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 02:38:30', NULL, NULL, 0, 1, 14, 'Out Patient (Specify)', '123', '', '', 'Not Requested', 'C:\\fakepath\\Justification.docx'),
+(170, 'Sick Leave', '03/02/2020', '03/04/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 02:42:33', NULL, NULL, 0, 0, 14, 'Out Patient (Specify)', '123', '', '', 'Not Requested', 'Justification.docx'),
+(171, 'Sick Leave', '03/02/2020', '03/05/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 03:30:13', NULL, NULL, 0, 0, 14, 'Out Patient (Specify)', 'test upload', '', '', 'Not Requested', 'Justification.docx'),
+(172, 'Sick Leave', '03/02/2020', '03/05/2020', 'We are the best reflexologist in town, our spa is in full air conditioned.', '2020-03-06 03:30:30', NULL, NULL, 0, 1, 14, 'Out Patient (Specify)', 'test upload', '', '', 'Not Requested', 'Justification.docx');
 
 -- --------------------------------------------------------
 
@@ -356,8 +409,8 @@ INSERT INTO `tblleaves` (`id`, `LeaveType`, `ToDate`, `FromDate`, `Description`,
 CREATE TABLE `tblleavetype` (
   `id` int(11) NOT NULL,
   `LeaveType` varchar(200) DEFAULT NULL,
-  `Description` mediumtext,
-  `CreationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `Description` mediumtext DEFAULT NULL,
+  `CreationDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -481,6 +534,12 @@ ALTER TABLE `empcredits`
   ADD PRIMARY KEY (`empid`);
 
 --
+-- Indexes for table `supervisor`
+--
+ALTER TABLE `supervisor`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbldepartments`
 --
 ALTER TABLE `tbldepartments`
@@ -534,6 +593,12 @@ ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `supervisor`
+--
+ALTER TABLE `supervisor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `tbldepartments`
 --
 ALTER TABLE `tbldepartments`
@@ -549,7 +614,7 @@ ALTER TABLE `tblemployees`
 -- AUTO_INCREMENT for table `tblleaves`
 --
 ALTER TABLE `tblleaves`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=173;
 
 --
 -- AUTO_INCREMENT for table `tblleavetype`
