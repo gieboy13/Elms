@@ -22,15 +22,27 @@ error_reporting(1);
 <body>
 <?php
 include('includes/config.php');
-$leaveid = $_GET['id'];
-    $query=mysqli_query($conn2,"select * from tblleaves l 
-                                join tblemployees e 
-                                on e.id = l.empid join empcredits c on c.empid = e.id 
-                               
-                            where l.id = $leaveid");
 
- $rowl = mysqli_fetch_array($query);
- $emid = $rowl['empid'];
+
+$leaveid = $_GET['id'];
+$sql = "SELECT CONCAT(e.FirstName,' ',e.LastName) as FullName, e.Department as Department, e.Position as Position, s.salarygrade as Salary, l.LeaveType as LeaveType, CONCAT(MONTHNAME(l.PostingDate),' ',DAY(l.PostingDate),', ',YEAR(l.PostingDate)) as PostingDate, CONCAT(MONTHNAME(l.ToDate),' ',DAY(l.ToDate),', ',YEAR(l.ToDate)) as todate, CONCAT(MONTHNAME(l.FromDate),' ',DAY(l.FromDate),', ',YEAR(l.FromDate)) as fromdate, l.casesick as casesick, l.casesickdesc as sickdesc, l.casevac as casevac, l.casevacdesc as vacdesc, DATEDIFF(l.FromDate, l.ToDate) AS workingdays, l.commutation as commutation, c.sick_credits as sickc, c.vacation_credits as vacc 
+		FROM tblleaves as l
+		JOIN tblemployees as e
+		on e.id = l.empid
+		JOIN tblsalarygrade as s 
+		on e.salary = s.salarygrade
+		JOIN empcredits as c 
+		on e.id = c.empid
+		WHERE l.id = $leaveid";
+$query = $dbh -> prepare($sql);
+
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{   
  
 ?>
 
@@ -43,17 +55,13 @@ $leaveid = $_GET['id'];
 	</tr>
 	<tr>
 		<td colspan="">
-			<label for="Department">1. Office/Department/College: <br><strong><?php echo $rowl['Department']; ?></strong></label>
+			<label for="Department">1. Office/Department/College: <br><strong><?php echo htmlentities($result->Department);?></strong></label>
 
 		</td>
 		<td colspan="2">
 			2. Name: <br>
  
-    <strong><?php echo $rowl['LastName']; ?>
-    <?php echo $rowl['FirstName']; ?> 
-    <?php echo $rowl['MiddleName']; ?></strong>
-
-
+    <strong><?php echo htmlentities($result->FullName);?></strong>
 
 </td>
 		</td>
@@ -61,21 +69,17 @@ $leaveid = $_GET['id'];
 	<tr>
 		<td>
 			3. Date of Filing <br>
-			<strong><?php echo $rowl['PostingDate']; ?>
-			<?php echo htmlentities($result->PostingDate);?></strong>
+			<strong><?php echo htmlentities($result->PostingDate);?></strong>
 		</td>
 		<td>
 			4. Position <br>
-			<strong><?php echo $rowl['Position']; ?></strong>
+			<strong><?php echo htmlentities($result->Position);?></strong>
 		</td>
 		<td>
 			5. Salary <br>
-			<?php  
- $query2=mysqli_query($conn2,"select *  from tblemployees e 
-                                join tblsalarygrade s on s.salarygrade = e.salary
-                            where e.id = $emid"); $rowl2 = mysqli_fetch_array($query2);?>
+		
 
-              <strong><?php echo $rowl2['salary'];?></strong>
+              <strong>Grade: <?php echo htmlentities($result->Salary);?></strong>
 		</td>
 	</tr>
 	<tr>
@@ -86,38 +90,18 @@ $leaveid = $_GET['id'];
 	<tr>
 		<td style="width: 375px;">
 			6.a Type of Leave: 
-			<strong><?php echo $rowl['LeaveType'].'</strong>'; 
+			<strong><?php echo htmlentities($result->LeaveType);?></strong>
+			<br><br>
+			Inclusive Dates:
+			<br>	<br>		
 
+			From : <?php echo htmlentities($result->todate);?>
+			<br>
+			To : <?php echo htmlentities($result->fromdate);?>
 
-echo "<pre>";
-$startDate = $rowl['FromDate'];
-$endDate = $rowl['ToDate'];
+			<br><br>
 
-$startDatetime = new DateTime("$startDate 00:00:00");
-
-$endDatetime = new DateTime("$endDate 00:00:00");
-
-$datetimeCounter = $startDatetime;
-$allDateCounter = 0;
-$weekendCounter = 0;
-print_r('Inclusive Dates: <br><strong>');
-print_r($startDatetime->format('M/d/Y-D') . " to ");
-print_r($endDatetime->format('M/d/Y-D')."</br></strong>");
-while($datetimeCounter->format('M/d/Y-D') <= $endDatetime->format('M/d/Y-D')){
-    
-    $allDateCounter++;
-   print_r($datetimeCounter->format('m-d-Y-D') . "<br/>");
-
-    if($datetimeCounter->format('w') == 0 || $datetimeCounter->format('w') == 6){
-        $weekendCounter++;
-    }
-
-    $datetimeCounter->modify('+1 day'); // increment ng date
-}
-
-$inclusiveDateCounter = $allDateCounter - $weekendCounter;
-print_r('Number of Working Days Applied For: <strong>');
-print_r($inclusiveDateCounter.'<strong>');?>
+			Number of working days applied for: <?php echo htmlentities($result->workingdays);?>
 		</td>
 		<td colspan="3" style="width: 25px;">
 			6.b Where Leave will be spent: <br>
@@ -126,24 +110,75 @@ print_r($inclusiveDateCounter.'<strong>');?>
 			&nbsp;&nbsp;&nbsp;
 			1) In case of vacation leave 
 			<form>
-				<input type="checkbox" name="ph">Within the Philippines<br>
-				<input type="checkbox" name="ab">Aborad (Specify __________________<br>______________________________________<br>	
+			<?php 
+			
+			if(htmlentities($result->casevac) != "" && htmlentities($result->casevac) != "Abroad (Specify)")
+			{
+				echo "<input type='checkbox' checked>Within the Philippines<br>";
+				echo "<input type='checkbox' >Abroad (Specify) <br>__________________";
+			}
+			else if(htmlentities($result->casevac) != "" && htmlentities($result->casevac) != "Within the Philippines")
+			{
+				echo "<input type='checkbox' >Within the Philippines<br>";
+				echo "<input type='checkbox' checked>Abroad (Specify) <br> <u>".htmlentities($result->vacdesc)."   </u><br>";
+			}
+			else if(htmlentities($result->casevac) == "")
+			{
+				echo "<input type='checkbox' >Within the Philippines<br>";
+				echo "<input type='checkbox' >Abroad (Specify) <br>__________________";
+			}
+
+				
+			
+			?>
+
+
 			</form>
 			&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;
 			2) In case of sick leave
 			<form>
-				<input type="checkbox" name="hosp">In Hospital (Specify __________________<br>______________________________________
-				<input type="checkbox" name="op">Out Patient (Specify __________________<br>______________________________________
+
+			<?php 
+			
+			if(htmlentities($result->casesick) != "" && htmlentities($result->casesick) != "In Hospital (Specify)")
+			{
+				echo "<input type='checkbox' checked>In Hospital (Specify) : <br> <u>".htmlentities($result->sickdesc)."</u><br>";
+				echo "<input type='checkbox' >Out Patient (Specify) : <br>";
+			}
+			else if(htmlentities($result->casesick) != "" && htmlentities($result->casesick) != "Out Patient (Specify)")
+			{
+				echo "<input type='checkbox' checked>In Hospital (Specify) : <br> <u>".htmlentities($result->sickdesc)."</u><br>";
+				echo "<input type='checkbox' >Out Patient (Specify) : <br>";
+			}
+			else if(htmlentities($result->casesick) == "")
+			{
+				echo "<input type='checkbox' >In Hospital (Specify) : <br>";
+				echo "<input type='checkbox' >Out Patient (Specify) : <br>";
+			}
+
+			?>
+
+
 			</form><br>
 			6.d Commutation<br>
 			<form>
-				<input type="checkbox" name="req">Requested
-				&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;
-				<input type="checkbox" name="notreq">Not Requested
+			<?php 
+			
+			if(htmlentities($result->commutation) != "" && htmlentities($result->commutation) != "Not Requested")
+			{
+				echo "<input type='checkbox' checked>Requested  &nbsp;";
+				echo "<input type='checkbox'>Not Requested <br>";
+			}
+			else if(htmlentities($result->commutation) != "" && htmlentities($result->commutation) != "Requested")
+			{
+				echo "<input type='checkbox'>Requested  &nbsp;";
+				echo "<input type='checkbox' checked>Not Requested <br>";
+			}
+			
+
+			?>
 			</form><br>
 			<center>__________________________________</center>
 			
@@ -159,11 +194,9 @@ print_r($inclusiveDateCounter.'<strong>');?>
 	<tr>
 		<td>
 			7.a Certificate of Leave Credits: 
-			<?php $query3=mysqli_query($conn2,"select NOW() as datetoday  from tblemployees e 
-                                join tblsalarygrade s on s.salarygrade = e.salary
-                            where e.id = $emid"); $rowl3 = mysqli_fetch_array($query3)?>
-                            <br>As of 
-                            <strong><?php echo $rowl3['datetoday']; ?></strong>
+		
+                            <br>As of <?php echo date("Y/m/d");?>
+                            <strong></strong>
          <table style="color: black; border: 1px solid black; width: 100%;"  >
          <tr style="color: black;">
             <td style="border: 1px solid black; width: 100px;"><center>Vacation</center></td>
@@ -171,9 +204,9 @@ print_r($inclusiveDateCounter.'<strong>');?>
             <td style="border: 1px solid black; width: 100px;"><center>Total</center></td>
             </tr>
         <tr style="color: black;">
-            <td style="border: 1px solid black; width: 100px;"><strong><center><?php echo $rowl['sick_credits']; ?></strong><br>Days</center></td>
-            <td style="border: 1px solid black; width: 100px;"><strong><center><?php echo $rowl['vacation_credits']; ?></strong><br>Days</center></td>
-            <td style="border: 1px solid black; width: 100px;"><strong><center><?php echo ($rowl['vacation_credits'])+($rowl['sick_credits']); ?></strong><br>Days</center></td>
+            <td style="border: 1px solid black; width: 100px;"><strong><center><?php echo htmlentities($result->sickc);?></strong><br>Days</center></td>
+            <td style="border: 1px solid black; width: 100px;"><strong><center><?php echo htmlentities($result->vacc);?></strong><br>Days</center></td>
+            <td style="border: 1px solid black; width: 100px;"><strong><center><?php echo htmlentities($result->sickc)+htmlentities($result->vacc);?></strong><br>Days</center></td>
         </tr>
              </table>
             <br><br><br>
@@ -219,6 +252,12 @@ print_r($inclusiveDateCounter.'<strong>');?>
 			
 		</td>
 	</tr>
+
+	
+<?php 
+} }
+?>
+
 
 
 

@@ -110,6 +110,8 @@ if($stats==1){
                                                 <span style="color: red">Rejected</span>
                                                  <?php } if($stats==0)  { ?>
  <span style="color: blue">waiting for approval</span>
+ <?php } if($stats==3)  { ?>
+ <span style="color: red">Cancelled</span>
  <?php } ?>
 
 

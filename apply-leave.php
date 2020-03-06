@@ -134,7 +134,14 @@
                                                                          
                                                </select> 
                                               
-                                             </div> -->
+                                             </div> --> 
+
+                                          <div style="color: black;" class="col m12 s12">
+                                             <div style="color: black;">Description</div>
+                                             <input id="description" name="description" type="text" required> 
+                                          </div>
+                                          <div style="height:10px;"></div>
+
                                           <div class="col m12 s12">
                                              
 
@@ -142,8 +149,8 @@
                                                 <div style="color: black;">Where Leave will be spent?</div>                                               
                                                 <select  name="casesick" id="casesick" autocomplete="off" >                                        
                                                    <option value="" selected>In Case of Sick Leave...</option>
-                                                   <option value="Out Patient">Out Patient (specify)</option>
-                                                   <option value="In Hospital">In Hospital (specify)</option>
+                                                   <option value="Out Patient (Specify)">Out Patient (specify)</option>
+                                                   <option value="In Hospital (Specify)">In Hospital (specify)</option>
                                                 </select>    
                                             
                                                    <input readonly placeholder="Specify Details" id="sickspecify" name="casesickdesc" type="text" autocomplete="off" required> 
@@ -165,19 +172,23 @@
                                                                                  
                                              </div>
 
+                                            
+
                                              <div style="color: black;">Commutation</div>
                                              <select  name="commutation" id="commutation" autocomplete="off">
-                                                <option value="notrequested" selected>Not Requested</option>
-                                                <option value="requested">Requested</option>
+                                                <option value="Not Requested" selected>Not Requested</option>
+                                                <option value="Requested">Requested</option>
                                              </select> 
                                              
                                         
 
                                              
                                           </div>
+                                        
+
                                           <div style="color: black;" class="input-field col m12 s12">
                                              <div style="color: black;">Justification Document <small style="color: gray"><i> word format (.docx), if picture put it in the ms word</i></small></div>
-                                             <input id="justicedocument"  type="file"> 
+                                             <input  type="file" name="justice" id="justice" required> 
                                           </div>
                                           <div style="height:10px;"></div>
                                         
@@ -416,32 +427,41 @@
                   }).then((result) => {
                   if (result.value) {
 
-                     
-                     var eid = $('#sessionid').val();
-                     var type = $('#leavetype').val();            
-                     var fromdate = $('#date2').val()
-                     var todate = $('#date1').val()
-                     var casesick = $('#casesick').val();
-                     var casesickdesc = $('#sickspecify').val();
-                     var casevac = $('#casevac').val();
-                     var casevacdesc = $('#abroadspecify').val();
-                     var commutation = $('#commutation').val();
+                     var data = new FormData();
 
-                  
+                     data.append('eid',$('#sessionid').val());
+                     data.append('type',$('#leavetype').val());
+                     data.append('fromdate',$('#date2').val());
+                     data.append('todate',$('#date1').val());
+                     data.append('casesick',$('#casesick').val());
+                     data.append('casesickdesc',$('#sickspecify').val());
+                     data.append('casevac',$('#casevac').val());
+                     data.append('casevacdesc',$('#abroadspecify').val());
+                     data.append('commutation',$('#commutation').val());
+                     data.append('desc',$('#description').val());
+                     data.append('justice',justice.files[0]);
+
+                     
+                     // var eid = $('#sessionid').val();
+                     // var type = $('#leavetype').val();            
+                     // var fromdate = $('#date2').val()
+                     // var todate = $('#date1').val()
+                     // var casesick = $('#casesick').val();
+                     // var casesickdesc = $('#sickspecify').val();
+                     // var casevac = $('#casevac').val();
+                     // var casevacdesc = $('#abroadspecify').val();
+                     // var commutation = $('#commutation').val();
+                     // var desc = $('#description').val();
+
+                     // var justice = document.getElementById('justice');
+                     // var justice = justice.files[0];
+
                      $.ajax({ 
                      url: "applyleave.php",
-                     data: {
-                        eid: eid,
-                        type: type,
-                        fromdate: fromdate,
-                        todate: todate,               
-                        casesick: casesick,
-                        casesickdesc: casesickdesc,
-                        casevac: casevac,               
-                        casevacdesc: casevacdesc,
-                        commutation: commutation	
-                     },
+                     data: data,
                      type: 'post',
+                     processData: false, // important
+                     contentType: false, // important
                      success: function(data){
                         if(data == 'success')
                         {
