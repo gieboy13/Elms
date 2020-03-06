@@ -143,7 +143,12 @@ $msg="Leave Updated Successfully";
                                     <tbody>
 <?php 
 $lid=intval($_GET['leaveid']);
-$sql = "SELECT tblleaves.id as lid,empcredits.sick_credits,empcredits.vacation_credits,tblemployees.FirstName,tblemployees.LastName,tblemployees.EmpId,tblemployees.id,tblemployees.Gender,tblemployees.Phonenumber,tblemployees.EmailId,tblleaves.LeaveType,tblleaves.FromDate,tblleaves.ToDate,tblleaves.Description,tblleaves.PostingDate,tblleaves.Status,tblleaves.AdminRemark,tblleaves.AdminRemarkDate from tblleaves join tblemployees on tblleaves.empid=tblemployees.id join empcredits on tblleaves.empid=empcredits.empid where tblleaves.id=:lid";
+$sql = "SELECT justification, casesick, casesickdesc, casevac, casevacdesc, commutation, tblleaves.id as lid,empcredits.sick_credits,empcredits.vacation_credits,tblemployees.FirstName,tblemployees.LastName,tblemployees.EmpId,tblemployees.id,tblemployees.Gender,tblemployees.Phonenumber,tblemployees.EmailId,tblleaves.LeaveType,tblleaves.FromDate,tblleaves.ToDate,tblleaves.Description,tblleaves.PostingDate,tblleaves.Status,tblleaves.AdminRemark,tblleaves.AdminRemarkDate from tblleaves 
+join tblemployees 
+on tblleaves.empid=tblemployees.id 
+join empcredits 
+on tblleaves.empid=empcredits.empid
+where tblleaves.id=:lid";
 $query = $dbh -> prepare($sql);
 $query->bindParam(':lid',$lid,PDO::PARAM_STR);
 $query->execute();
@@ -154,6 +159,21 @@ if($query->rowCount() > 0)
 foreach($results as $result)
 {         
       ?>  
+      <tr>
+<td style="font-size:16px;"><b>Leave Status :</b></td>
+<td colspan="5"><?php $stats=$result->Status;
+if($stats==1){
+?>
+<span style="color: green">Approved</span>
+ <?php } if($stats==2)  { ?>
+<span style="color: red">Rejected</span>
+<?php } if($stats==0)  { ?>
+ <span style="color: orange">Waiting For Approval</span>
+ <?php } if($stats==3)  { ?>
+ <span style="color: red">Cancelled</span>
+ <?php } ?>
+</td>
+</tr>
 
                                         <tr>
                                             <td style="font-size:16px;"> <b>Employee Name :</b></td>
@@ -191,19 +211,7 @@ foreach($results as $result)
 
                                         </tr>
 
-<tr>
-<td style="font-size:16px;"><b>Leave Status :</b></td>
-<td colspan="5"><?php $stats=$result->Status;
-if($stats==1){
-?>
-<span style="color: green">Approved</span>
- <?php } if($stats==2)  { ?>
-<span style="color: red">Rejected</span>
-<?php } if($stats==0)  { ?>
- <span style="color: blue">Waiting For Approval</span>
- <?php } ?>
-</td>
-</tr>
+
 
 <tr>
 <td style="font-size:16px;"><b>Admin Remark: </b></td>
@@ -229,17 +237,93 @@ echo htmlentities($result->AdminRemarkDate);
 ?></td>
  </tr>
  <tr>
-   <td style="font-size:16px; left: 350px;"><b>Available Sick Leave Credits: </b></td>
-                                           <td><?php echo htmlentities($result->sick_credits);?></td>
-                                           <td style="font-size:16px;"><b>Available Vacation Leave Credits: </b></td>
-                                           <td><?php echo htmlentities($result->vacation_credits);?></td>
+   <td style="font-size:16px; left: 350px;"><b>Case of Sick Leave:</b></td>
+                                           <td><?php 
+                                           if(htmlentities($result->casesick) == "")
+                                           {
+                                               echo "---";
+                                           }
+                                           else{
+                                             echo htmlentities($result->casesick);
+                                           }
+                                           
+                                           
+                                           
+                                           ?></td>
+                                           <td style="font-size:16px;"><b>Specify: </b></td>
+                                           <td><?php 
+                                           if(htmlentities($result->casesickdesc) == "")
+                                           {
+                                               echo "---";
+                                           }
+                                           else{
+                                             echo htmlentities($result->casesickdesc);
+                                           }
+                                           ?></td>
  </tr>
+ <tr>
+   <td style="font-size:16px; left: 350px;"><b>Case of Vacation Leave: </b></td>
+                                           <td><?php 
+                                           if(htmlentities($result->casevac) == "")
+                                           {
+                                               echo "---";
+                                           }
+                                           else{
+                                             echo htmlentities($result->casevac);
+                                           }
+                                           ?></td>
+                                           <td style="font-size:16px;"><b>Specify: </b></td>
+                                           <td><?php 
+                                           if(htmlentities($result->casevacdesc) == "")
+                                           {
+                                               echo "---";
+                                           }
+                                           else{
+                                             echo htmlentities($result->casevacdesc);
+                                           }
+                                           ?></td>
+                                           <td style="font-size:16px;"><b>Commutation </b></td>
+                                           <td><?php echo htmlentities($result->commutation);?></td>
+ </tr>
+
+ <tr>
+ <td style="font-size:16px;"><b>Justification Document : </b></td>
+ <td colspan="5">
+ 
+ <?php
+    if(htmlentities($result->justification) == "")
+    {
+        echo "---";
+
+    }
+    else{
+        echo "<a href='download.php?path=".htmlentities($result->justification)."'> Click to download --> ".htmlentities($result->justification)."</a>";
+
+
+    }
+ 
+ ?>
+ </td>
+ 
+ 
+ </tr>
+
+ 
+
+ 
+
+
+
+
+
 <?php 
 if($stats==0)
 {
 
 ?>
 <tr>
+
+
  <td colspan="5">
   <a class="modal-trigger waves-effect waves-light btn" href="#modal1">Take&nbsp;Action</a>
 <form name="adminaction" method="post">
